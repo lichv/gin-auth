@@ -1,7 +1,6 @@
 package models
 
 import (
-	"fmt"
 	"gin-auth/utils"
 	"github.com/jinzhu/gorm"
 )
@@ -50,8 +49,6 @@ func GetWechatConfigOne( query map[string]interface{},orderBy interface{}) ( *We
 	model := db.Model(&WechatConfig{})
 	for key, value := range query {
 		b,err := utils.In ([]string{"code", "type", "appid", "appsecret", "scope", "auth_redirect_url", "notice_url", "group", "company", "flag", "state"},key)
-		fmt.Println(b)
-		fmt.Println(err)
 		if  err == nil && b{
 			model = model.Where(key + "= ?", value)
 		}
