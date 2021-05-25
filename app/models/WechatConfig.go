@@ -1,6 +1,7 @@
 package models
 
 import (
+	"fmt"
 	"gin-auth/utils"
 	"github.com/jinzhu/gorm"
 )
@@ -49,7 +50,9 @@ func GetWechatConfigOne( query map[string]interface{},orderBy interface{}) ( *We
 	model := db.Model(&WechatConfig{})
 	for key, value := range query {
 		b,err := utils.In ([]string{"code", "type", "appid", "appsecret", "scope", "auth_redirect_url", "notice_url", "group", "company", "flag", "state"},key)
-		if  err != nil && b{
+		fmt.Println(b)
+		fmt.Println(err)
+		if  err == nil && b{
 			model = model.Where(key + "= ?", value)
 		}
 	}
@@ -66,7 +69,7 @@ func GetWechatConfigPages( query map[string]interface{},orderBy interface{},page
 	model := db.Where("state=?",true)
 	for key, value := range query {
 		b,err := utils.In ([]string{"code", "WechatConfigname", "password", "name", "sex", "birthday", "phone", "email", "province", "city", "county", "address", "reference", "regtime", "remark", "is_active", "is_superWechatConfig", "flag", "state"},key)
-		if  err != nil && b{
+		if  err == nil && b{
 			model = model.Where(key + "= ?", value)
 		}
 	}
@@ -116,7 +119,7 @@ func DeleteWechatConfigs(maps map[string]interface{}) error{
 	model := db
 	for key, value := range maps {
 		b,err := utils.In ([]string{"code", "WechatConfigname", "password", "name", "sex", "birthday", "phone", "email", "province", "city", "county", "address", "reference", "regtime", "remark", "is_active", "is_superWechatConfig", "flag", "state"},key)
-		if  err != nil && b{
+		if  err == nil && b{
 			model = model.Where(key + "= ?", value)
 		}
 	}

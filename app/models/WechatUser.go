@@ -52,7 +52,7 @@ func GetWechatUserOne( query map[string]interface{},orderBy interface{}) ( *Wech
 	model := db.Model(&WechatUser{})
 	for key, value := range query {
 		b,err := utils.In ([]string{"code", "config_code", "openid", "unionid", "nickname", "sex", "country", "province", "city", "headimage", "privilege", "flag", "state"},key)
-		if  err != nil && b{
+		if  err == nil && b{
 			model = model.Where(key + "= ?", value)
 		}
 	}
@@ -69,7 +69,7 @@ func GetWechatUserPages( query map[string]interface{},orderBy interface{},pageNu
 	model := db.Where("state=?",true)
 	for key, value := range query {
 		b,err := utils.In ([]string{"code", "config_code", "openid", "unionid", "nickname", "sex", "country", "province", "city", "headimage", "privilege", "flag", "state"},key)
-		if  err != nil && b{
+		if  err == nil && b{
 			model = model.Where(key + "= ?", value)
 		}
 	}
@@ -120,7 +120,7 @@ func DeleteWechatUsers(maps map[string]interface{}) error{
 	model := db
 	for key, value := range maps {
 		b,err := utils.In ([]string{"code", "WechatUsername", "password", "name", "sex", "birthday", "phone", "email", "province", "city", "county", "address", "reference", "regtime", "remark", "is_active", "is_superWechatUser", "flag", "state"},key)
-		if  err != nil && b{
+		if  err == nil && b{
 			model = model.Where(key + "= ?", value)
 		}
 	}

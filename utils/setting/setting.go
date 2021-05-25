@@ -1,10 +1,12 @@
 package setting
 
 import (
+	"flag"
 	"log"
 	"time"
 
 	"github.com/go-ini/ini"
+	"github.com/lichv/go"
 )
 
 type App struct {
@@ -15,6 +17,7 @@ type App struct {
 
 	RuntimeRootPath string
 	PublicPath string
+	RootPath string
 
 	ImageSavePath  string
 	ImageMaxSize   int
@@ -68,7 +71,15 @@ var cfg *ini.File
 // Setup initialize the configuration instance
 func Setup() {
 	var err error
-	cfg, err = ini.Load("config.ini")
+	var config_path string
+	flag.StringVar(&config_path,"c","./config.ini","配置文件地址")
+	if !flag.Parsed(){
+		flag.Parse()
+	}
+	if !lichv.IsExist(config_path) {
+		log.Fatalf("配置文件不存在")
+	}
+	cfg, err = ini.Load(config_path)
 	if err != nil {
 		log.Fatalf("setting.Setup, fail to parse 'conf/app.ini': %v", err)
 	}

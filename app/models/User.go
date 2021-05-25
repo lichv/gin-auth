@@ -59,7 +59,7 @@ func GetUserOne( query map[string]interface{},orderBy interface{}) ( *User,error
 	model := db.Model(&User{})
 	for key, value := range query {
 		b,err := utils.In ([]string{"code", "username", "password", "name", "sex", "birthday", "phone", "email", "province", "city", "county", "address", "reference", "regtime", "remark", "is_active", "is_superuser", "flag", "state"},key)
-		if  err != nil && b{
+		if  err == nil && b{
 			model = model.Where(key + "= ?", value)
 		}
 	}
@@ -76,7 +76,7 @@ func GetUserPages( query map[string]interface{},orderBy interface{},pageNum int,
 	model := db.Where("state=?",true)
 	for key, value := range query {
 		b,err := utils.In ([]string{"code", "username", "password", "name", "sex", "birthday", "phone", "email", "province", "city", "county", "address", "reference", "regtime", "remark", "is_active", "is_superuser", "flag", "state"},key)
-		if  err != nil && b{
+		if  err == nil && b{
 			model = model.Where(key + "= ?", value)
 		}
 	}
@@ -134,7 +134,7 @@ func DeleteUsers(maps map[string]interface{}) error{
 	model := db
 	for key, value := range maps {
 		b,err := utils.In ([]string{"code", "username", "password", "name", "sex", "birthday", "phone", "email", "province", "city", "county", "address", "reference", "regtime", "remark", "is_active", "is_superuser", "flag", "state"},key)
-		if  err != nil && b{
+		if  err == nil && b{
 			model = model.Where(key + "= ?", value)
 		}
 	}
