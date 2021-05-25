@@ -1,6 +1,7 @@
 package models
 
 import (
+	"fmt"
 	"gin-auth/utils"
 	"github.com/jinzhu/gorm"
 )
@@ -17,6 +18,7 @@ type WechatUser struct {
 	Province string `json:"province" form:"province"`
 	City string `json:"city" form:"city"`
 	Phone string `json:"phone" form:"phone"`
+	Privilege string `json:"privilege" form:"privilege"`
 	Flag bool `json:"flag" form:"flag"`
 	State bool `json:"state" form:"state"`
 }
@@ -40,6 +42,7 @@ func GetWechatUserTotal(maps interface{}) (count int,err error) {
 
 func FindWechatUserByCode( code string) ( wechatUser *WechatUser, err error) {
 	err = db.Model(&WechatUser{}).Where("code = ? ",code).First(&wechatUser).Error
+	fmt.Println(wechatUser)
 	if err != nil && err != gorm.ErrRecordNotFound {
 		return &WechatUser{},err
 	}
@@ -90,7 +93,11 @@ func AddWechatUser( data map[string]interface{}) error {
 	dataState,_ := data["state"]
 	state := utils.BoolVal(dataState)
 
-
+	dataPrivilege,_ := data["privilege"]
+	privilege := utils.Strval(dataPrivilege)
+	if privilege == ""{
+		privilege = "{}"
+	}
 	wechatUser := WechatUser{
 		Code:data["code"].(string),
 		ConfigCode:data["config_code"].(string),
@@ -103,6 +110,7 @@ func AddWechatUser( data map[string]interface{}) error {
 		Province:data["province"].(string),
 		City:data["city"].(string),
 		Phone:utils.Strval(phone),
+		Privilege:privilege,
 		Flag:flag,
 		State:state,
 	}

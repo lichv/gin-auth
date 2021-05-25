@@ -13,10 +13,12 @@ type WechatUser struct {
 	Unionid string `json:"unionid" form:"unionid"`
 	Nickname string `json:"nickname" form:"nickname"`
 	Sex string `json:"sex" form:"sex"`
+	Headimage string `json:"headimage" form:"headimage"`
 	Country string `json:"country" form:"country"`
 	Province string `json:"province" form:"province"`
 	City string `json:"city" form:"city"`
-	Headimage string `json:"headimage" form:"headimage"`
+	Phone string `json:"phone" form:"phone"`
+	Privilege string `json:"privilege" form:"privilege"`
 	Flag bool `json:"flag" form:"flag"`
 	State bool `json:"state" form:"state"`
 }
@@ -91,6 +93,8 @@ func TransferWechatUserModel(u *models.WechatUser)(wechatUser *WechatUser){
 		Province:u.Province,
 		City:u.City,
 		Headimage:u.Headimage,
+		Phone:u.Phone,
+		Privilege: u.Privilege,
 		Flag:u.Flag,
 		State:u.State,
 	}

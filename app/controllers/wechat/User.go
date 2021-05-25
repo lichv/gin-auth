@@ -36,7 +36,7 @@ func GetSelf(c *gin.Context) {
 	}
 	fmt.Println(claims)
 	code := claims.Code
-	if code[:2] == "wx" {
+	if code != "" &&  len(code) > 2 &&  code[:2] == "wx" {
 		one, err := services.GetWechatUserOne(map[string]interface{}{"code": code}, "code asc")
 		if err != nil {
 			c.JSON(http.StatusOK, gin.H{

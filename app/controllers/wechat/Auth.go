@@ -116,6 +116,7 @@ func Callback(c *gin.Context) {
 		})
 		return
 	}
+	fmt.Println(token)
 	uri,err := utils.URLAppendParams(redirectUrl,"user_token",token)
 	if err != nil {
 		c.JSON(http.StatusOK,gin.H{
@@ -124,6 +125,7 @@ func Callback(c *gin.Context) {
 		})
 		return
 	}
+	fmt.Println(uri)
 	c.Redirect(302,uri)
 
 }
