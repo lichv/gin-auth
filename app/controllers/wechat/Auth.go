@@ -65,9 +65,9 @@ func Callback(c *gin.Context) {
 		})
 		return
 	}
-	config_code := split[0]
-	redirect_url := split[1]
-	configOne, _ := services.GetWechatConfigOne(map[string]interface{}{"code": config_code}, "code desc")
+	configCode := split[0]
+	redirectUrl := split[1]
+	configOne, _ := services.GetWechatConfigOne(map[string]interface{}{"code": configCode}, "code desc")
 	fmt.Println(configOne)
 
 	endpoint := mpoauth2.NewEndpoint(configOne.Appid, configOne.Appsecret)
@@ -92,8 +92,14 @@ func Callback(c *gin.Context) {
 		return
 	}
 	fmt.Println(userinfo)
+	sex := "unknow"
+	if userinfo.Sex == 1{
+		sex = "male"
+	}else if userinfo.Sex == 2{
+		sex = "female"
+	}
 
-	wu,err := services.AddWechatUser(map[string]interface{}{"config_code": config_code, "openid": userinfo.OpenId, "unionid": userinfo.UnionId, "nickname": userinfo.Nickname, "sex": userinfo.Sex, "country": userinfo.Country, "province": userinfo.Province, "city": userinfo.City, "headimage": userinfo.HeadImageURL, "privilege": userinfo.Privilege})
+	wu,err := services.AddWechatUser(map[string]interface{}{"config_code": utils.Strval(configCode), "openid": userinfo.OpenId, "unionid": userinfo.UnionId, "nickname": userinfo.Nickname, "sex": sex, "country": userinfo.Country, "province": userinfo.Province, "city": userinfo.City, "headimage": userinfo.HeadImageURL})
 	if err != nil {
 		c.JSON(http.StatusOK,gin.H{
 			"state":3002,
@@ -110,7 +116,7 @@ func Callback(c *gin.Context) {
 		})
 		return
 	}
-	uri,err := utils.URLAppendParams(redirect_url,"user_token",token)
+	uri,err := utils.URLAppendParams(redirectUrl,"user_token",token)
 	if err != nil {
 		c.JSON(http.StatusOK,gin.H{
 			"state":3002,

@@ -15,7 +15,7 @@ type WechatConfig struct {
 	NoticeUrl string `json:"notice_url" form:"notice_url"`
 	Group string `json:"group" form:"group"`
 	Company string `json:"company" form:"company"`
-	FLag bool `json:"flag" form:"flag"`
+	Flag bool `json:"flag" form:"flag"`
 	State bool `json:"state" form:"state"`
 }
 
@@ -75,7 +75,7 @@ func TransferWechatConfigModel(u *models.WechatConfig)(wechatConfigs *WechatConf
 		NoticeUrl:u.NoticeUrl,
 		Group:u.Group,
 		Company:u.Company,
-		FLag:u.FLag,
+		Flag:u.Flag,
 		State:u.State,
 	}
 	return

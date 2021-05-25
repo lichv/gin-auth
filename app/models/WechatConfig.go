@@ -15,7 +15,7 @@ type WechatConfig struct {
 	NoticeUrl string `json:"notice_url" form:"notice_url"`
 	Group string `json:"group" form:"group"`
 	Company string `json:"company" form:"company"`
-	FLag bool `json:"flag" form:"flag"`
+	Flag bool `json:"flag" form:"flag"`
 	State bool `json:"state" form:"state"`
 }
 
@@ -79,18 +79,23 @@ func GetWechatConfigPages( query map[string]interface{},orderBy interface{},page
 }
 
 func AddWechatConfig( data map[string]interface{}) error {
+	dataFlag,_ := data["flag"]
+	flag := utils.BoolVal(dataFlag)
+
+	dataState,_ := data["state"]
+	state := utils.BoolVal(dataState)
 	WechatConfig := WechatConfig{
 		Code:data["code"].(string),
-		Type:data["Type"].(string),
-		Appid:data["Appid"].(string),
-		Appsecret:data["Appsecret"].(string),
-		Scope:data["Scope"].(string),
-		AuthRedirectUrl:data["AuthRedirectUrl"].(string),
-		NoticeUrl:data["NoticeUrl"].(string),
-		Group:data["Group"].(string),
-		Company:data["Company"].(string),
-		FLag:data["flag"].(bool),
-		State:data["state"].(bool),
+		Type:data["type"].(string),
+		Appid:data["appid"].(string),
+		Appsecret:data["appsecret"].(string),
+		Scope:data["scope"].(string),
+		AuthRedirectUrl:data["auth_redirect_url"].(string),
+		NoticeUrl:data["notice_url"].(string),
+		Group:data["group"].(string),
+		Company:data["company"].(string),
+		Flag:flag,
+		State:state,
 	}
 	if err:= db.Create(&WechatConfig).Error;err != nil{
 		return err

@@ -1,7 +1,6 @@
 package jwt
 
 import (
-	"gin-auth/utils"
 	"github.com/dgrijalva/jwt-go"
 	"time"
 )
@@ -20,8 +19,8 @@ func GenerateToken(code, username string) (string, error) {
 	expireTime := nowTime.Add(2 * time.Hour)
 
 	claims := Claims{
-		utils.EncodeMD5(code),
-		utils.EncodeMD5(username),
+		code,
+		username,
 		jwt.StandardClaims{
 			ExpiresAt: expireTime.Unix(),
 			Issuer:    "gin-blog",

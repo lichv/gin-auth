@@ -17,8 +17,7 @@ type WechatUser struct {
 	Province string `json:"province" form:"province"`
 	City string `json:"city" form:"city"`
 	Headimage string `json:"headimage" form:"headimage"`
-	Privilege string `json:"privilege" form:"privilege"`
-	FLag bool `json:"flag" form:"flag"`
+	Flag bool `json:"flag" form:"flag"`
 	State bool `json:"state" form:"state"`
 }
 
@@ -47,9 +46,13 @@ func GetWechatUserPages( query map[string]interface{},orderBy interface{},pageNu
 }
 func AddWechatUser( data map[string]interface{}) (wu *WechatUser,err error ){
 	one, err := models.GetWechatUserOne(data, "code desc")
-	if err != nil{
+	fmt.Println("AddWechatUser")
+	fmt.Println(one)
+	fmt.Println(err)
+	if err != nil || one.Code == ""{
 		code :="wx_"+utils.GeneTimeUUID()
 		data["code"] = code
+
 		err := models.AddWechatUser(data)
 		if err != nil {
 			return &WechatUser{},nil
@@ -88,8 +91,7 @@ func TransferWechatUserModel(u *models.WechatUser)(wechatUser *WechatUser){
 		Province:u.Province,
 		City:u.City,
 		Headimage:u.Headimage,
-		Privilege:u.Privilege,
-		FLag:u.FLag,
+		Flag:u.Flag,
 		State:u.State,
 	}
 	return

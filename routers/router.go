@@ -17,6 +17,8 @@ func InitRouter() *gin.Engine {
 	r.Use(gin.Recovery())
 	r.Use(favicon.New(path.Join(setting.AppSetting.RootPath, "favicon.ico")))
 
+	r.Use(middlewares.Cors())
+
 	r.GET("/", func(context *gin.Context) {
 		context.JSON(http.StatusOK, gin.H{
 			"state":   2000,
@@ -32,6 +34,7 @@ func InitRouter() *gin.Engine {
 	apiv1 := r.Group("/api/v1")
 	apiv1.Use(middlewares.JWT())
 	{
+		apiv1.Any("/user/self",wechat.GetSelf)
 		apiv1.GET("/user/list", user.GetUsers)
 		apiv1.Any("/wechat/user",wechat.GetWechatUser)
 	}

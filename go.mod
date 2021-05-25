@@ -5,6 +5,7 @@ go 1.16
 require (
 	github.com/chanxuehong/wechat v0.0.0-20201110083048-0180211b69fd
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
+	github.com/gin-contrib/cors v1.3.1
 	github.com/gin-gonic/gin v1.7.1
 	github.com/go-ini/ini v1.62.0
 	github.com/go-playground/validator/v10 v10.6.1 // indirect

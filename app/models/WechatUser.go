@@ -17,8 +17,7 @@ type WechatUser struct {
 	Province string `json:"province" form:"province"`
 	City string `json:"city" form:"city"`
 	Phone string `json:"phone" form:"phone"`
-	Privilege string `json:"privilege" form:"privilege"`
-	FLag bool `json:"flag" form:"flag"`
+	Flag bool `json:"flag" form:"flag"`
 	State bool `json:"state" form:"state"`
 }
 
@@ -81,22 +80,33 @@ func GetWechatUserPages( query map[string]interface{},orderBy interface{},pageNu
 }
 
 func AddWechatUser( data map[string]interface{}) error {
-	WechatUser := WechatUser{
+	phone,ok := data["phone"]
+	if !ok {
+		phone = ""
+	}
+	dataFlag,_ := data["flag"]
+	flag := utils.BoolVal(dataFlag)
+
+	dataState,_ := data["state"]
+	state := utils.BoolVal(dataState)
+
+
+	wechatUser := WechatUser{
 		Code:data["code"].(string),
-		ConfigCode:data["ConfigCode"].(string),
-		Openid:data["Openid"].(string),
-		Unionid:data["Unionid"].(string),
-		Nickname:data["Nickname"].(string),
-		Sex:data["Sex"].(string),
-		Headimage:data["Headimage"].(string),
-		Country:data["Country"].(string),
+		ConfigCode:data["config_code"].(string),
+		Openid:data["openid"].(string),
+		Unionid:data["unionid"].(string),
+		Nickname:data["nickname"].(string),
+		Sex:data["sex"].(string),
+		Headimage:data["headimage"].(string),
+		Country:data["country"].(string),
 		Province:data["province"].(string),
 		City:data["city"].(string),
-		Phone:data["Phone"].(string),
-		FLag:data["flag"].(bool),
-		State:data["state"].(bool),
+		Phone:utils.Strval(phone),
+		Flag:flag,
+		State:state,
 	}
-	if err:= db.Create(&WechatUser).Error;err != nil{
+	if err:= db.Create(&wechatUser).Error;err != nil{
 		return err
 	}
 	return nil
@@ -119,7 +129,7 @@ func DeleteWechatUser(code string) error {
 func DeleteWechatUsers(maps map[string]interface{}) error{
 	model := db
 	for key, value := range maps {
-		b,err := utils.In ([]string{"code", "WechatUsername", "password", "name", "sex", "birthday", "phone", "email", "province", "city", "county", "address", "reference", "regtime", "remark", "is_active", "is_superWechatUser", "flag", "state"},key)
+		b,err := utils.In ([]string{"code", "username", "password", "name", "sex", "birthday", "phone", "email", "province", "city", "county", "address", "reference", "regtime", "remark", "is_active", "is_superWechatUser", "flag", "state"},key)
 		if  err == nil && b{
 			model = model.Where(key + "= ?", value)
 		}
