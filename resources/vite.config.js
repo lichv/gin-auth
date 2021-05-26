@@ -17,6 +17,7 @@ module.exports = {
    * @default 'dist'
    */
   outDir: "../public",
+  assetsDir:"static",
   port: 8000,
   // 是否自动在浏览器打开
   open: true,
