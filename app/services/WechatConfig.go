@@ -6,6 +6,7 @@ import (
 )
 
 type WechatConfig struct {
+	Id int `json:"id" form:"id" gorm:"id"`
 	Code string `json:"code" form:"code"`
 	Type string `json:"type" form:"type"`
 	Appid string `json:"appid" form:"appid"`
@@ -15,6 +16,9 @@ type WechatConfig struct {
 	NoticeUrl string `json:"notice_url" form:"notice_url"`
 	Group string `json:"group" form:"group"`
 	Company string `json:"company" form:"company"`
+	CreatedOn int64 `json:"created_on" form:"created_on" gorm:"created_on"`
+	ModifiedOn int64 `json:"modified_on" form:"modified_on" gorm:"modified_on"`
+	DeletedOn int64 `json:"deleted_on" form:"deleted_on" gorm:"deleted_on"`
 	Flag bool `json:"flag" form:"flag"`
 	State bool `json:"state" form:"state"`
 }
@@ -66,6 +70,7 @@ func ClearAllWechatConfig() (err error) {
 
 func TransferWechatConfigModel(u *models.WechatConfig)(wechatConfigs *WechatConfig){
 	wechatConfigs =  &WechatConfig{
+		Id:u.Id,
 		Code:u.Code,
 		Type:u.Type,
 		Appid:u.Appid,
@@ -75,6 +80,9 @@ func TransferWechatConfigModel(u *models.WechatConfig)(wechatConfigs *WechatConf
 		NoticeUrl:u.NoticeUrl,
 		Group:u.Group,
 		Company:u.Company,
+		CreatedOn: u.CreatedOn,
+		ModifiedOn: u.ModifiedOn,
+		DeletedOn: u.DeletedOn,
 		Flag:u.Flag,
 		State:u.State,
 	}

@@ -8,6 +8,7 @@ import (
 )
 
 type User struct {
+	Id int `json:"id" form:"id" gorm:"id"`
 	Code string `json:"code" form:"code" gorm:"code"`
 	Username string `json:"username" form:"username" gorm:"username"`
 	Password string `json:"password" form:"password" gorm:"password"`
@@ -25,6 +26,9 @@ type User struct {
 	Remark string `json:"remark" form:"remark" gorm:"remark"`
 	IsActive bool `json:"is_active" form:"is_active" gorm:"is_active"`
 	IsSuperUser bool `json:"is_super_user" form:"is_super_user" gorm:"is_super_user"`
+	CreatedOn int64 `json:"created_on" form:"created_on" gorm:"created_on"`
+	ModifiedOn int64 `json:"modified_on" form:"modified_on" gorm:"modified_on"`
+	DeletedOn int64 `json:"deleted_on" form:"deleted_on" gorm:"deleted_on"`
 	FLag bool `json:"flag" form:"flag" gorm:"flag"`
 	State bool `json:"state" form:"state" gorm:"state"`
 }
@@ -39,7 +43,7 @@ func ExistUserByCode(code string) (b bool,err error) {
 }
 
 func GetUserTotal(maps interface{}) (count int,err error) {
-	err = db.Model(&User{}).Where("state = ?",true).Count(&count).Error
+	err = db.Model(&User{}).Where("state = ?",1).Count(&count).Error
 	if err != nil {
 		return 0,err
 	}

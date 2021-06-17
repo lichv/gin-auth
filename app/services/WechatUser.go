@@ -7,6 +7,7 @@ import (
 )
 
 type WechatUser struct {
+	Id int `json:"id" form:"id" gorm:"id"`
 	Code string `json:"code" form:"code"`
 	ConfigCode string `json:"config_code" form:"config_code"`
 	Openid string `json:"openid" form:"openid"`
@@ -19,6 +20,9 @@ type WechatUser struct {
 	City string `json:"city" form:"city"`
 	Phone string `json:"phone" form:"phone"`
 	Privilege string `json:"privilege" form:"privilege"`
+	CreatedOn int64 `json:"created_on" form:"created_on" gorm:"created_on"`
+	ModifiedOn int64 `json:"modified_on" form:"modified_on" gorm:"modified_on"`
+	DeletedOn int64 `json:"deleted_on" form:"deleted_on" gorm:"deleted_on"`
 	Flag bool `json:"flag" form:"flag"`
 	State bool `json:"state" form:"state"`
 }
@@ -59,6 +63,7 @@ func AddWechatUser( data map[string]interface{}) (wu *WechatUser,err error ){
 		if err != nil {
 			return &WechatUser{},nil
 		}
+		fmt.Println(code)
 		user, err := models.FindWechatUserByCode(code)
 		if err != nil{
 			return &WechatUser{},nil
@@ -83,6 +88,7 @@ func ClearAllWechatUser() (err error) {
 
 func TransferWechatUserModel(u *models.WechatUser)(wechatUser *WechatUser){
 	wechatUser =  &WechatUser{
+		Id:u.Id,
 		Code:u.Code,
 		ConfigCode:u.ConfigCode,
 		Openid:u.Openid,
@@ -95,6 +101,9 @@ func TransferWechatUserModel(u *models.WechatUser)(wechatUser *WechatUser){
 		Headimage:u.Headimage,
 		Phone:u.Phone,
 		Privilege: u.Privilege,
+		CreatedOn: u.CreatedOn,
+		ModifiedOn: u.ModifiedOn,
+		DeletedOn: u.DeletedOn,
 		Flag:u.Flag,
 		State:u.State,
 	}

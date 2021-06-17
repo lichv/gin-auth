@@ -4,11 +4,14 @@ import (
 	"fmt"
 	"gin-auth/app/models"
 	"gin-auth/utils/jwt"
+	lichv "github.com/lichv/go"
 )
 
 type User struct {
+	Id int `json:"id" form:"id" gorm:"id"`
 	Code string `json:"code" form:"code" gorm:"code"`
 	Username string `json:"username" form:"username" gorm:"username"`
+	Password string `json:"password" form:"password" gorm:"password"`
 	Name string `json:"name" form:"name" gorm:"name"`
 	Sex string `json:"sex" form:"sex" gorm:"sex"`
 	Birthday string `json:"birthday" form:"birthday" gorm:"birthday"`
@@ -23,6 +26,9 @@ type User struct {
 	Remark string `json:"remark" form:"remark" gorm:"remark"`
 	IsActive bool `json:"is_active" form:"is_active" gorm:"is_active"`
 	IsSuperUser bool `json:"is_super_user" form:"is_super_user" gorm:"is_super_user"`
+	CreatedOn int64 `json:"created_on" form:"created_on" gorm:"created_on"`
+	ModifiedOn int64 `json:"modified_on" form:"modified_on" gorm:"modified_on"`
+	DeletedOn int64 `json:"deleted_on" form:"deleted_on" gorm:"deleted_on"`
 	FLag bool `json:"flag" form:"flag" gorm:"flag"`
 	State bool `json:"state" form:"state" gorm:"state"`
 }
@@ -75,6 +81,7 @@ func ClearAllUser() (err error) {
 
 func TransferUserModel(u *models.User)(user *User){
 	user =  &User{
+		Id:u.Id,
 		Code:u.Code,
 		Username:u.Username,
 		Name:u.Name,
@@ -91,6 +98,9 @@ func TransferUserModel(u *models.User)(user *User){
 		Remark:u.Remark,
 		IsActive:u.IsActive,
 		IsSuperUser:u.IsSuperUser,
+		CreatedOn: u.CreatedOn,
+		ModifiedOn: u.ModifiedOn,
+		DeletedOn: u.DeletedOn,
 		FLag:u.FLag,
 		State:u.State,
 	}
@@ -105,7 +115,8 @@ func TransferUsers(us []*models.User) (users []*User) {
 }
 
 func GenerateToken(code, username string) (string, error) {
-	return jwt.GenerateToken(code,username)
+	token_validity_time, _ := FindSysparamValueByCode("token_validity_time")
+	return jwt.GenerateToken(code,username,lichv.IntVal(token_validity_time))
 }
 
 func Auth(username, password string) (string,error){
@@ -113,7 +124,8 @@ func Auth(username, password string) (string,error){
 	if err != nil {
 		return "",err
 	}
-	token,err := jwt.GenerateToken(user.Code,user.Username)
+	token_validity_time, _ := FindSysparamValueByCode("token_validity_time")
+	token,err := jwt.GenerateToken(user.Code,user.Username,lichv.IntVal(token_validity_time))
 	if err != nil {
 		return "",err
 	}

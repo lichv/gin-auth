@@ -3,6 +3,7 @@ module gin-auth
 go 1.16
 
 require (
+	github.com/aliyun/alibaba-cloud-sdk-go v1.61.1084 // indirect
 	github.com/chanxuehong/wechat v0.0.0-20201110083048-0180211b69fd
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/gin-contrib/cors v1.3.1
@@ -14,7 +15,7 @@ require (
 	github.com/json-iterator/go v1.1.11 // indirect
 	github.com/leodido/go-urn v1.2.1 // indirect
 	github.com/lib/pq v1.10.2 // indirect
-	github.com/lichv/go v0.0.0-20210514133514-bdfdddbe60df
+	github.com/lichv/go v0.0.0-20210604095240-bd971ac3cd26
 	github.com/modern-go/reflect2 v1.0.1 // indirect
 	github.com/robfig/cron v1.2.0
 	github.com/smartystreets/goconvey v1.6.4 // indirect

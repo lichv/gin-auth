@@ -6,6 +6,7 @@ import (
 )
 
 type WechatConfig struct {
+	Id int `json:"id" form:"id" gorm:"id"`
 	Code string `json:"code" form:"code"`
 	Type string `json:"type" form:"type"`
 	Appid string `json:"appid" form:"appid"`
@@ -15,6 +16,9 @@ type WechatConfig struct {
 	NoticeUrl string `json:"notice_url" form:"notice_url"`
 	Group string `json:"group" form:"group"`
 	Company string `json:"company" form:"company"`
+	CreatedOn int64 `json:"created_on" form:"created_on" gorm:"created_on"`
+	ModifiedOn int64 `json:"modified_on" form:"modified_on" gorm:"modified_on"`
+	DeletedOn int64 `json:"deleted_on" form:"deleted_on" gorm:"deleted_on"`
 	Flag bool `json:"flag" form:"flag"`
 	State bool `json:"state" form:"state"`
 }
@@ -29,7 +33,7 @@ func ExistWechatConfigByCode(code string) (b bool,err error) {
 }
 
 func GetWechatConfigTotal(maps interface{}) (count int,err error) {
-	err = db.Model(&WechatConfig{}).Where("state = ?",true).Count(&count).Error
+	err = db.Model(&WechatConfig{}).Where("state = ?",1).Count(&count).Error
 	if err != nil {
 		return 0,err
 	}

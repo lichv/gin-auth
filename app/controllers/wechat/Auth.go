@@ -8,6 +8,7 @@ import (
 	mpoauth2 "github.com/chanxuehong/wechat/mp/oauth2"
 	"github.com/chanxuehong/wechat/oauth2"
 	"github.com/gin-gonic/gin"
+	lichv "github.com/lichv/go"
 	"net/http"
 	"strings"
 )
@@ -108,7 +109,9 @@ func Callback(c *gin.Context) {
 		return
 	}
 	fmt.Println(wu)
-	token, err := jwt.GenerateToken(wu.Code, wu.Nickname)
+
+	token_validity_time, _ := services.FindSysparamValueByCode("token_validity_time")
+	token, err := jwt.GenerateToken(wu.Code, wu.Nickname,lichv.IntVal(token_validity_time))
 	if err != nil {
 		c.JSON(http.StatusOK,gin.H{
 			"state":3002,

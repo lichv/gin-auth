@@ -7,6 +7,7 @@ import (
 )
 
 type WechatUser struct {
+	Id int `json:"id" form:"id" gorm:"id"`
 	Code string `json:"code" form:"code"`
 	ConfigCode string `json:"config_code" form:"config_code"`
 	Openid string `json:"openid" form:"openid"`
@@ -19,6 +20,9 @@ type WechatUser struct {
 	City string `json:"city" form:"city"`
 	Phone string `json:"phone" form:"phone"`
 	Privilege string `json:"privilege" form:"privilege"`
+	CreatedOn int64 `json:"created_on" form:"created_on" gorm:"created_on"`
+	ModifiedOn int64 `json:"modified_on" form:"modified_on" gorm:"modified_on"`
+	DeletedOn int64 `json:"deleted_on" form:"deleted_on" gorm:"deleted_on"`
 	Flag bool `json:"flag" form:"flag"`
 	State bool `json:"state" form:"state"`
 }
@@ -40,13 +44,15 @@ func GetWechatUserTotal(maps interface{}) (count int,err error) {
 	return count, err
 }
 
-func FindWechatUserByCode( code string) ( wechatUser *WechatUser, err error) {
+func FindWechatUserByCode( code string) ( *WechatUser, error) {
+	var wechatUser WechatUser
+	var err error
 	err = db.Model(&WechatUser{}).Where("code = ? ",code).First(&wechatUser).Error
 	fmt.Println(wechatUser)
 	if err != nil && err != gorm.ErrRecordNotFound {
 		return &WechatUser{},err
 	}
-	return wechatUser, err
+	return &wechatUser, err
 }
 
 func GetWechatUserOne( query map[string]interface{},orderBy interface{}) ( *WechatUser,error) {

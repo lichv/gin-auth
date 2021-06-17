@@ -15,7 +15,7 @@ var db *gorm.DB
 func Setup() {
 	var err error
 	var dataSource string
-	if setting.DatabaseSetting.Type == "msyql" {
+	if setting.DatabaseSetting.Type == "mysql" {
 		dataSource = fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=%s&autocommit=true&parseTime=True&loc=Local",
 			setting.DatabaseSetting.User,
 			setting.DatabaseSetting.Password,
