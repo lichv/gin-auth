@@ -51,11 +51,6 @@ func URLAppendParams(url string, key ,value string) (string,error) {
 
 	query := l.Query()
 	query.Set(key,value)
-	//u, err := url2.Parse(query.Encode())
-	//if err != nil {
-	//	return url,err
-	//}
-	//return fmt.Sprintf("%v",u),nil
 	encodeurl := l.Scheme + "://" + l.Host + "?" + query.Encode()
 	return encodeurl,nil
 }
